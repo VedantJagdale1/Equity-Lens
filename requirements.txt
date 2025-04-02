@@ -9,7 +9,6 @@ statsmodels
 matplotlib
 pillow
 streamlit-option-menu
-concurrent.futures
 google-generativeai
 supabase
 beautifulsoup4
