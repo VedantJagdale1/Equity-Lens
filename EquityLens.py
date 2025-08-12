@@ -134,17 +134,17 @@ with col2:
     st.markdown('</div>', unsafe_allow_html=True)
 @st.cache_data
 def load_stock_list():
-    df = pd.read_csv("stocks.csv")  # Expects column: symbol
-    return df["symbol"].tolist()  # Return list of symbols
+    df = pd.read_csv("stocks.csv")  
+    return df["symbol"].tolist()  
     
 stock_symbols = load_stock_list()
 
 if selected == "Explore":
-    # Home Page Content
+   
 
     st.markdown("---")
     
-    # Header section
+  
     st.markdown("<h2 style='text-align: center;'>Stock Fundamental & Technical values</h2>", unsafe_allow_html=True)
 
     
@@ -164,17 +164,17 @@ if selected == "Explore":
     def analyze_stock(stock_symbol):
         try:
             stock = yf.Ticker(get_symbol(stock_symbol))
-            # Daily data for general metrics
+            
             daily_data = stock.history(period="1y", interval="1d")
             info = stock.info
 
             st.markdown("---")
             
             if not daily_data.empty:
-                # header card
+               
                 st.success(f"📊 {stock_symbol} - {info.get('longName', stock_symbol)} Analysis report")
                 
-                # Main metrics
+                
                 col1, col2, col3, col4 = st.columns(4)
                 last_price = daily_data['Close'][-1]
                 previous_price = daily_data['Close'][-2]
@@ -194,7 +194,7 @@ if selected == "Explore":
 
                 st.markdown("---")
                 
-                # FUNDAMENTAL ANALYSIS METRICS
+                
                 st.markdown("### FUNDAMENTAL ANALYSIS METRICS")
                 metrics_col1, metrics_col2, metrics_col3, metrics_col4 = st.columns(4)
                 
@@ -232,10 +232,10 @@ if selected == "Explore":
 
                 st.markdown("---")
                 
-                # TECHNICAL INDICATORS
+              
                 st.markdown("### TECHNICAL INDICATORS")
                 
-                # MOVING AVERAGES
+                
                 daily_data['MA50'] = daily_data['Close'].rolling(window=50).mean()
                 daily_data['MA200'] = daily_data['Close'].rolling(window=200).mean()
                 daily_data['RSI'] = calculate_rsi(daily_data['Close'])
@@ -254,10 +254,10 @@ if selected == "Explore":
 
                 st.markdown("---")
                 
-                # Graphics
+                
                 st.markdown("### PRICE AND VOLUME CHARTS")
                 
-                # Dropdown for timezone selection
+               
                 time_periods = {
                     "1 Day": ("90d", "1d"), 
                     "1 Week": ("180d", "1d"),
@@ -267,17 +267,17 @@ if selected == "Explore":
                 selected_period = st.selectbox(
                     "Candle",
                     options=list(time_periods.keys()),
-                    index=1,  # 1 Day is selected by default
+                    index=1, 
                     key="chart_period"
                 )
                 
-                # Import data only for charts
+                
                 period, interval = time_periods[selected_period]
                 try:
                     chart_data = stock.history(period=period, interval=interval)
                     
                     if not chart_data.empty:
-                        # resample data according to selected time period
+                        
                         if selected_period == "4 hour":
                             chart_data = chart_data.resample('4H').agg({
                                 'Open': 'first',
@@ -311,17 +311,17 @@ if selected == "Explore":
                                 'Volume': 'sum'
                             }).dropna()
 
-                        # Moving Averages
+                        
                         if len(chart_data) > 50:
                             chart_data['MA50'] = chart_data['Close'].rolling(window=50).mean()
                         if len(chart_data) > 200:
                             chart_data['MA200'] = chart_data['Close'].rolling(window=200).mean()
                         
-                        # Candlestick chart
+                        
                         fig = create_candlestick_chart(chart_data, stock_symbol, selected_period)
                         st.plotly_chart(fig, use_container_width=True)
                         
-                        # Volume chart
+                       
                         fig_volume = create_volume_chart(chart_data, stock_symbol, selected_period)
                         st.plotly_chart(fig_volume, use_container_width=True)
                     else:
@@ -329,7 +329,7 @@ if selected == "Explore":
                 except Exception as e:
                     st.warning(f" Data could not be retrieved for {selected_period}. Please select another time period.")
 
-                # Comapany Information
+                
                 if 'longBusinessSummary' in info:
                     with st.expander("About Company",expanded=True):
                         try:
@@ -338,7 +338,7 @@ if selected == "Explore":
                         except:
                             st.write("Information Not Found.")
 
-                # Technical Analysis Summary
+                
                 with st.expander("Technical Analysis Summary",expanded=True):
                     trend = "Uptrend" if daily_data['MA50'][-1] > daily_data['MA200'][-1] else "Downtrend"
                     st.write(f"{'⬆️' if daily_data['MA50'][-1] > daily_data['MA200'][-1] else '⬇️'} **Trend Status:** {trend}")
@@ -354,7 +354,7 @@ if selected == "Explore":
                     volume_change = ((daily_data['Volume'][-5:].mean() - daily_data['Volume'][-10:-5].mean()) / daily_data['Volume'][-10:-5].mean()) * 100
                     st.write(f"{'✅' if volume_change > 0 else 'ℹ️'} **Volume Change (5 Days):** {volume_change:.2f}%")
 
-                # Raw Data
+                
                 with st.expander("Raw Data",expanded=True):
                     show_dataframe(daily_data)
                     
@@ -375,7 +375,7 @@ if selected == "Explore":
         rs = gain / loss
         return 100 - (100 / (1 + rs))
 
-    # Update Graphic Styles
+    
     def create_figure_layout(title):
         return dict(
             title=title,
@@ -383,16 +383,16 @@ if selected == "Explore":
             showlegend=True,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            width=1000,  # Fixed width
-            height=600,  # Fixed height
-            margin=dict(l=50, r=50, t=50, b=50)  # Margin
+            width=1000,  
+            height=600,  
+            margin=dict(l=50, r=50, t=50, b=50)  
         )
 
-    # Update candlestick chart creation function
+    
     def create_candlestick_chart(hist, stock_symbol, period_text):
         fig = go.Figure()
         
-        # candlesticks
+        
         fig.add_trace(go.Candlestick(
             x=hist.index,
             open=hist['Open'],
@@ -402,7 +402,7 @@ if selected == "Explore":
             name="OHLC"
         ))
         
-        # Moving Averages (if any)
+        
         if 'MA50' in hist.columns:
             fig.add_trace(go.Scatter(
                 x=hist.index,
@@ -453,16 +453,16 @@ if selected == "Explore":
         
         return fig
 
-    # update volume chart creation function
+    
     def create_volume_chart(hist, stock_symbol, period_text):
         fig_volume = go.Figure()
         
-        # volume bars (dark blue colour)
+        
         fig_volume.add_trace(go.Bar(
             x=hist.index,
             y=hist['Volume'],
             name="Volume",
-            marker_color='#001A6E'  # dark blue
+            marker_color='#001A6E'  
         ))
         
         layout = create_figure_layout(f"{stock_symbol} {period_text} Trading Volume")
@@ -488,7 +488,7 @@ if selected == "Explore":
                 fixedrange=False,
                 title=dict(
                     text="Transaction Volume",
-                    standoff=10  # distance between y axis title and axis
+                    standoff=10  
                 )
             ),
             dragmode='zoom',
@@ -522,12 +522,11 @@ if selected == "Explore":
                df = stock.history(period=period)
                return df[['Close']]
  
-# Function to prepare data for LSTM
-# Function to prepare data for LSTM
+
            def prepare_data(df, time_steps=60):
                 scaler = MinMaxScaler(feature_range=(0, 1))
     
-    # Ensure df is converted to NumPy array before fitting scaler
+    
                 scaled_data = scaler.fit_transform(df.values.reshape(-1, 1))
 
                 X, y = [], []
@@ -538,7 +537,7 @@ if selected == "Explore":
                 return np.array(X), np.array(y), scaler
 
 
-# Function to build LSTM model
+
            def build_lstm_model(input_shape):
                model = Sequential([
                    LSTM(50, return_sequences=True, input_shape=input_shape),
@@ -551,41 +550,40 @@ if selected == "Explore":
                model.compile(optimizer='adam', loss='mean_squared_error')
                return model
 
-# ✅ Fixed Function to predict next 30 days
+
            def predict_next_30_days(model, last_60_days, scaler):
                predictions = []
                current_input = last_60_days.reshape(1, -1, 1)
 
                for _ in range(30):
-                   pred = model.predict(current_input, verbose=0)[0][0]  # Extract single value
+                   pred = model.predict(current_input, verbose=0)[0][0]  
                    predictions.append(pred)
 
-        # Append prediction correctly by reshaping
+        
                    pred_reshaped = np.array([[pred]]).reshape(1, 1, 1)
                    current_input = np.append(current_input[:, 1:, :], pred_reshaped, axis=1)
 
                return scaler.inverse_transform(np.array(predictions).reshape(-1, 1))
            z=1
-           if (z>0):# Streamlit UI
+           if (z>0):
               
               df = fetch_stock_data(stock_symbol)
               st.write("### Historical Stock Prices")
               st.line_chart(df)
 
-    # Prepare data
+    
               time_steps = 60
               X, y, scaler = prepare_data(df, time_steps)
 
-    # Train model
+    
               model = build_lstm_model((time_steps, 1))
               model.fit(X, y, epochs=20, batch_size=32, verbose=1)
 
-    # Predict next 30 days
-    # Ensure last 60 days are transformed correctly
+    
               last_60_days = scaler.transform(df[-60:].values.reshape(-1, 1))
               predictions = predict_next_30_days(model, last_60_days, scaler)
 
-    # Visualize predictions
+    
               st.write("### Predicted Next 30 Days Prices")
               fig, ax = plt.subplots(figsize=(10, 5))
               ax.plot(range(1, 31), predictions, label="Predicted Prices", marker="o")
@@ -707,15 +705,15 @@ if selected == "Market Status":
                 height=800
             )
 
-            # After creating your treemap figure with px.treemap(...)
+           
             fig.update_traces(
             texttemplate="%{label}<br>M Cap: ₹%{customdata[0]:,.1f} Cr<br>Change: %{customdata[1]:+.2f}%<br>Price: ₹%{customdata[2]:,.1f}",
             hovertemplate="%{label}<br>Market Cap: ₹%{customdata[0]:,.1f} Cr<br>Price Change: %{customdata[1]:+.2f}%<br>Last Price: ₹%{customdata[2]:,.1f}<extra></extra>",
             textfont_size=18,
             hoverlabel=dict(font_size=18),
-             marker=dict(line=dict(color="black", width=1))  # This adds a black border of 1px width around each component
+             marker=dict(line=dict(color="black", width=1))  
             )
-  # Increases the font size of the hover text
+ 
             
             
 
@@ -726,14 +724,14 @@ if selected == "Market Status":
                     tickprefix="",
                     ticksuffix="%"
                 ),
-                paper_bgcolor='rgba(0,0,0,0)',  # Transparent background outside the plot area
-                plot_bgcolor='rgba(0,0,0,0)',   # Transparent plot area background
+                paper_bgcolor='rgba(0,0,0,0)',  
+                plot_bgcolor='rgba(0,0,0,0)',   
                 autosize=True
             )
 
 
 
-            # Use a full-width container to display the chart
+            
             with st.container():
                 st.plotly_chart(fig, use_container_width=True, config={'responsive': True})
 
@@ -814,25 +812,25 @@ if selected == "Portfolio Analysis":
     
     
 
-    # Configure Gemini API
+    
     GEMINI_API_KEY = "AIzaSyCEOyIc73JMWwtigUBovrRoBatTT9O-Bqw"
     genai.configure(api_key=GEMINI_API_KEY)
     
-    # Configure Supabase (credentials in secrets.toml)
-    SUPABASE_URL = "https://lqilulmhbcxpshbefaie.supabase.co"  # 🔹 Found in Supabase Dashboard > Project Settings > API
+    
+    SUPABASE_URL = "https://lqilulmhbcxpshbefaie.supabase.co" 
     SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxaWx1bG1oYmN4cHNoYmVmYWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5NzY0MDUsImV4cCI6MjA3MDU1MjQwNX0.b2jMddO63Q3EKuaqeAaP5P55nNMdyCn1PxOZeOkaa-s"  # 🔹 Use anon key (public) or service role key (admin access)
 
-# ✅ Create Supabase client
+
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
     
-    # Database setup
+    
     def init_db():
-        # Create tables if they don’t exist (Supabase allows manual table creation via dashboard, but we’ll ensure here)
+        
         try:
-            supabase.table("users").select("username").limit(1).execute()  # Check if table exists
+            supabase.table("users").select("username").limit(1).execute()  
         except Exception:
-            supabase.table("users").insert({"username": "dummy", "password": "dummy"}).execute()  # Create table
-            supabase.table("users").delete().eq("username", "dummy").execute()  # Clean up dummy entry
+            supabase.table("users").insert({"username": "dummy", "password": "dummy"}).execute()  
+            supabase.table("users").delete().eq("username", "dummy").execute()  
             
 
         
@@ -842,7 +840,7 @@ if selected == "Portfolio Analysis":
             supabase.table("portfolios").insert({"username": "dummy", "ticker": "dummy", "shares": 0, "buy_price": 0}).execute()
             supabase.table("portfolios").delete().eq("username", "dummy").execute()
     
-    # User authentication functions
+    
     def hash_password(password):
         return sha256(password.encode()).hexdigest()
     
@@ -851,7 +849,7 @@ if selected == "Portfolio Analysis":
             supabase.table("users").insert({"username": username, "password": hash_password(password)}).execute()
             return True
         except Exception as e:
-            if "duplicate key" in str(e).lower():  # Check for unique constraint violation
+            if "duplicate key" in str(e).lower():  
                 return False
             raise e
     
@@ -862,7 +860,7 @@ if selected == "Portfolio Analysis":
         return False
     
     def save_portfolio(username, portfolio):
-        supabase.table("portfolios").delete().eq("username", username).execute()  # Clear existing portfolio
+        supabase.table("portfolios").delete().eq("username", username).execute()  
         for stock in portfolio:
             supabase.table("portfolios").insert({
                 "username": username,
@@ -875,7 +873,7 @@ if selected == "Portfolio Analysis":
         response = supabase.table("portfolios").select("*").eq("username", username).execute()
         return [{"Ticker": row["ticker"], "Shares": row["shares"], "Buy Price": row["buy_price"]} for row in response.data]
     
-    # Gemini AI portfolio analysis function
+    
     def get_gemini_portfolio_analysis(portfolio_df):
         model = genai.GenerativeModel('gemini-1.5-flash')
         portfolio_summary = portfolio_df.to_string()
@@ -894,10 +892,10 @@ if selected == "Portfolio Analysis":
         except Exception as e:
             return f"Error fetching Gemini AI analysis: {str(e)}"
     
-    # Initialize database
+    
     init_db()
     
-    # Enhanced Dark Mode Custom CSS
+    
     st.markdown("""
         <style>
         body, .stApp {
@@ -977,7 +975,7 @@ if selected == "Portfolio Analysis":
     """, unsafe_allow_html=True)
     
     
-    # Authentication
+   
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
         st.session_state.username = None
@@ -1008,7 +1006,7 @@ if selected == "Portfolio Analysis":
                  st.error("Username already exists")
        st.markdown("</div>", unsafe_allow_html=True)
     else:
-        # Header
+        
         st.markdown("""
             <div class="header">
                 <h2>Welcome to Your Stock Portfolio</h2>
@@ -1016,7 +1014,7 @@ if selected == "Portfolio Analysis":
             </div>
         """, unsafe_allow_html=True)
     
-        # Main navigation
+        
         selected = option_menu(
             menu_title=None,
             options=["Portfolio Analysis"],
@@ -1040,7 +1038,7 @@ if selected == "Portfolio Analysis":
     
         
         
-        # Sidebar with simplified symbol selection
+        
         with st.sidebar:
             if st.button("Logout"):
                 st.session_state.logged_in = False
@@ -1050,7 +1048,7 @@ if selected == "Portfolio Analysis":
     
             st.header(f"Portfolio for {st.session_state.username}")
             
-            # Single selectbox for stock symbols
+            
             ticker = st.selectbox("Stock Ticker (e.g., RELIANCE.NS)", [""] + stock_symbols,help="Select a stock symbol from the list")
             
             shares = st.number_input("Shares", min_value=1, value=1)
@@ -1120,7 +1118,7 @@ if selected == "Portfolio Analysis":
                        
         
     
-        # Portfolio Analysis
+       
         if selected == "Portfolio Analysis":
             if not st.session_state.portfolio:
                 st.markdown("<div>Add stocks in the sidebar to see your portfolio analysis!</div>", unsafe_allow_html=True)
@@ -1192,7 +1190,7 @@ if selected == "Portfolio Analysis":
                     "Rel Strength vs Nifty (%)": "{:.2f}", "Days to Breakeven": "{}"
                 }), use_container_width=True)
     
-                # Gemini AI Analysis
+               
                 st.markdown("---")
                 st.subheader("AI-Powered Portfolio Insights (Powered by Gemini)")
                 gemini_analysis = get_gemini_portfolio_analysis(df)
@@ -1277,14 +1275,14 @@ if selected == "News":
     </style>
 """, unsafe_allow_html=True)
 
-# --- UI Header ---
+
     st.markdown("<h1 style='text-align: center;'>📈 Indian Stock Market News</h1>", unsafe_allow_html=True)
     st.write("Get the latest stock market news powered by **Google News RSS Feed**.")
 
-# --- Stock Symbol Input ---
+
     query = st.selectbox("🔍 Enter Stock Name (e.g., Reliance, Infosys, TCS):",[""] + stock_symbols,help="Select a stock symbol from the list")
 
-# --- Fetch stock logo from Yahoo Finance ---
+
     def get_stock_logo(symbol):
         url = f"https://query1.finance.yahoo.com/v7/finance/quote?symbols={symbol}.NS"
         response = requests.get(url)
@@ -1294,9 +1292,9 @@ if selected == "News":
                 result = data["quoteResponse"]["result"]
                 if result and "logo_url" in result[0]:
                    return result[0]["logo_url"]
-        return None  # Return None if logo not found
+        return None  
 
-# --- Fetch news from Google News RSS ---
+
     def fetch_google_news_rss(query):
         url = f"https://news.google.com/rss/search?q={query}+stock+news&hl=en-IN&gl=IN&ceid=IN:en"
         response = requests.get(url)
@@ -1306,7 +1304,7 @@ if selected == "News":
         news_list = []
         root = ET.fromstring(response.content)
 
-        for item in root.findall(".//item")[:5]:  # Get top 5 news
+        for item in root.findall(".//item")[:5]:  
             title = item.find("title").text
             link = item.find("link").text
             news_list.append((title, link))
@@ -1328,4 +1326,5 @@ if selected == "News":
                 )
             else:
                 st.error("❌ Failed to fetch news. Try a different stock name.")
+
 
