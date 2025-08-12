@@ -819,8 +819,8 @@ if selected == "Portfolio Analysis":
     genai.configure(api_key=GEMINI_API_KEY)
     
     # Configure Supabase (credentials in secrets.toml)
-    SUPABASE_URL = "https://kyrjxmofikwbehxxdcyj.supabase.co"  # 🔹 Found in Supabase Dashboard > Project Settings > API
-    SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5cmp4bW9maWt3YmVoeHhkY3lqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzUyODIzOCwiZXhwIjoyMDU5MTA0MjM4fQ.IYEy_AH7QfsLAE5O_385ZipLza_JMeYmoH_woxtO2rg"  # 🔹 Use anon key (public) or service role key (admin access)
+    SUPABASE_URL = "https://lqilulmhbcxpshbefaie.supabase.co"  # 🔹 Found in Supabase Dashboard > Project Settings > API
+    SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxaWx1bG1oYmN4cHNoYmVmYWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5NzY0MDUsImV4cCI6MjA3MDU1MjQwNX0.b2jMddO63Q3EKuaqeAaP5P55nNMdyCn1PxOZeOkaa-s"  # 🔹 Use anon key (public) or service role key (admin access)
 
 # ✅ Create Supabase client
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -1328,3 +1328,4 @@ if selected == "News":
                 )
             else:
                 st.error("❌ Failed to fetch news. Try a different stock name.")
+
