@@ -817,8 +817,8 @@ if selected == "Portfolio Analysis":
     genai.configure(api_key=GEMINI_API_KEY)
     
     
-    SUPABASE_URL = "https://urcklnbusfkeocwqqkos.supabase.co" 
-    SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVyY2tsbmJ1c2ZrZW9jd3Fxa29zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3NDQ0MTIsImV4cCI6MjA3NDMyMDQxMn0.xO_YSIMGkQY3vozxkavbhRaQcSwRAeeVj5lzCwhcsTI"  # 🔹 Use anon key (public) or service role key (admin access)
+    SUPABASE_URL = "https://nucydrfkpbwqmiovcwdj.supabase.co" 
+    SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51Y3lkcmZrcGJ3cW1pb3Zjd2RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NDQzNzUsImV4cCI6MjA3NzEyMDM3NX0.ljJXFMVdrD8Fkxai93sv0Qjm43qo4wcAhNFpN8035w0"  # 🔹 Use anon key (public) or service role key (admin access)
 
 
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -1326,6 +1326,7 @@ if selected == "News":
                 )
             else:
                 st.error("❌ Failed to fetch news. Try a different stock name.")
+
 
 
 
