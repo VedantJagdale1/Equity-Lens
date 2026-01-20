@@ -16,3 +16,4 @@ scikit-learn
 xgboost
 tensorflow
 xmltodict
+google-genai
