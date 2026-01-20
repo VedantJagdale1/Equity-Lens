@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 import numpy as np
 import plotly.express as px
 from concurrent.futures import ThreadPoolExecutor
-from google import genai
+import google.genai as genai
 
 import requests
 import xml.etree.ElementTree as ET
@@ -1437,3 +1437,4 @@ if selected == "News":
 
 
 st.markdown("<br/><div style='margin-top:10px;color:rgba(255,255,255,0.6);font-size:13px;text-align:center'>EquityLens • Built with Streamlit</div>", unsafe_allow_html=True)
+
