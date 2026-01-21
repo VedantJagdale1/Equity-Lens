@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 import numpy as np
 import plotly.express as px
 from concurrent.futures import ThreadPoolExecutor
-import google.genai as genai
+import google.generativeai as genai
 
 import requests
 import xml.etree.ElementTree as ET
