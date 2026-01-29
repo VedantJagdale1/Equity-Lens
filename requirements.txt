@@ -8,4 +8,4 @@ supabase
 requests
 scikit-learn
 tensorflow
-google-generativeai
+google-genai
