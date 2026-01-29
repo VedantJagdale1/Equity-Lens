@@ -57,7 +57,8 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
+session = requests.Session()
+session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'})
 selected = option_menu(
     menu_title=None,
     options=["Explore", "Market Status", "Portfolio Analysis", "News"],
@@ -782,7 +783,7 @@ if selected == "Market Status":
                 "Select Sectors",
                 options=sector_options,
                 default=sector_options,
-                key="nifty_sector_filter"
+                key="nifty_sector_selector"
             )
 
         filtered_df = valid_df[valid_df["Sector"].isin(selected_sectors)]
@@ -853,7 +854,7 @@ if selected == "Market Status":
             "Select Sectors",
             options=sector_options,
             default=sector_options,
-            key="sensex_sector_filter"
+            key="sensex_sector_selector"
         )
 
     filtered_df = valid_df[valid_df["Sector"].isin(selected_sectors)]
@@ -1449,6 +1450,7 @@ if selected == "News":
 
 
 st.markdown("<br/><div style='margin-top:10px;color:rgba(255,255,255,0.6);font-size:13px;text-align:center'>EquityLens • Built with Streamlit</div>", unsafe_allow_html=True)
+
 
 
 
