@@ -2,6 +2,7 @@ from hashlib import sha256
 from supabase import create_client, Client
 import streamlit as st
 from streamlit_option_menu import option_menu
+from streamlit.runtime.scriptrunner import add_script_run_ctx
 import pandas as pd
 import yfinance as yf
 import plotly.graph_objects as go
@@ -730,8 +731,17 @@ if selected == "Market Status":
 
     @st.cache_data(ttl=300)
     def fetch_yfinance_data(symbols):
+        results = []
         with ThreadPoolExecutor(max_workers=10) as executor:
-            results = list(executor.map(fetch_symbol_data, symbols))
+            futures = []
+            for symbol in symbols:
+                future = executor.submit(fetch_symbol_data, symbol)
+                add_script_run_ctx(future) # <--- This attaches the Streamlit context
+                futures.append(future)
+        
+            for future in futures:
+                results.append(future.result())
+              
         df = pd.DataFrame(results)
 
         fetched_symbols = set(df['Symbol'])
@@ -1439,6 +1449,7 @@ if selected == "News":
 
 
 st.markdown("<br/><div style='margin-top:10px;color:rgba(255,255,255,0.6);font-size:13px;text-align:center'>EquityLens • Built with Streamlit</div>", unsafe_allow_html=True)
+
 
 
 
