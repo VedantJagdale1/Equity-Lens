@@ -791,13 +791,12 @@ if selected == "Market Status":
         if not filtered_df.empty:
             fig = px.treemap(
                 filtered_df,
-                path=[px.Constant("NIFTY 50"), 'Sector', 'Symbol'],
-                values='MarketCap (Cr)',
-                color='Change (%)',
-                color_continuous_scale=['#d32f2f', '#ffffff', '#388e3c'],
+                path=[px.Constant("NSE Stocks"), 'Sector', 'Name'],
+                values='MarketCap',
+                color='PriceChange',
+                color_continuous_scale=['#ff4b4b', '#ffffff', '#00c853'],
                 color_continuous_midpoint=0,
                 hover_data=['MarketCap', 'PriceChange', 'LastPrice'],
-                title='NIFTY 50 Market Map (Size = Market Cap, Color = Change %)',
                 width=None,
                 height=800
             )
@@ -865,13 +864,12 @@ if selected == "Market Status":
             path=[px.Constant("Sensex Stocks"), 'Sector', 'Name'],
             values='MarketCap',
             color='PriceChange',
-            color_continuous_scale=[[0, "red"], [
-                0.4, "red"], [0.6, "green"], [1, "green"]],
+            color_continuous_scale=['#ff4b4b', '#ffffff', '#00c853'],
             color_continuous_midpoint=0,
             hover_data=['MarketCap', 'PriceChange', 'LastPrice'],
             width=None,
             height=800
-        )
+        )        
 
         fig.update_traces(
             texttemplate="%{label}<br>M Cap: ₹%{customdata[0]:,.1f} Cr<br>Change: %{customdata[1]:+.2f}%<br>Price: ₹%{customdata[2]:,.1f}",
@@ -1450,6 +1448,7 @@ if selected == "News":
 
 
 st.markdown("<br/><div style='margin-top:10px;color:rgba(255,255,255,0.6);font-size:13px;text-align:center'>EquityLens • Built with Streamlit</div>", unsafe_allow_html=True)
+
 
 
 
