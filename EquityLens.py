@@ -771,7 +771,8 @@ if selected == "Market Status":
             selected_sectors = st.multiselect(
                 "Select Sectors",
                 options=sector_options,
-                default=sector_options
+                default=sector_options,
+                key="nifty_sector_filter"
             )
 
         filtered_df = valid_df[valid_df["Sector"].isin(selected_sectors)]
@@ -841,7 +842,8 @@ if selected == "Market Status":
         selected_sectors = st.multiselect(
             "Select Sectors",
             options=sector_options,
-            default=sector_options
+            default=sector_options,
+            key="sensex_sector_filter"
         )
 
     filtered_df = valid_df[valid_df["Sector"].isin(selected_sectors)]
@@ -1437,5 +1439,6 @@ if selected == "News":
 
 
 st.markdown("<br/><div style='margin-top:10px;color:rgba(255,255,255,0.6);font-size:13px;text-align:center'>EquityLens • Built with Streamlit</div>", unsafe_allow_html=True)
+
 
 
