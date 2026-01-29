@@ -794,7 +794,8 @@ if selected == "Market Status":
                 path=[px.Constant("NSE Stocks"), 'Sector', 'Name'],
                 values='MarketCap',
                 color='PriceChange',
-                color_continuous_scale=['#f23645', '#1e222d', '#089981'],
+                color_continuous_scale=[[0, "red"], [
+                    0.4, "red"], [.6, "green"], [1, "green"]],
                 color_continuous_midpoint=0,
                 hover_data=['MarketCap', 'PriceChange', 'LastPrice'],
                 width=None,
@@ -802,11 +803,11 @@ if selected == "Market Status":
             )
 
             fig.update_traces(
-                color_continuous_scale=['#f23645', '#1e222d', '#089981'],
-                hovertemplate="<b>%{label}</b><br>Price: ₹%{customdata[2]:,.2f}<br>Change: %{customdata[1]:+.2f}%<extra></extra>",
-                textfont=dict(size=14, color="white"),
+                texttemplate="%{label}<br>M Cap: ₹%{customdata[0]:,.1f} Cr<br>Change: %{customdata[1]:+.2f}%<br>Price: ₹%{customdata[2]:,.1f}",
+                hovertemplate="%{label}<br>Market Cap: ₹%{customdata[0]:,.1f} Cr<br>Price Change: %{customdata[1]:+.2f}%<br>Last Price: ₹%{customdata[2]:,.1f}<extra></extra>",
+                textfont_size=18,
                 hoverlabel=dict(font_size=18),
-                marker=dict(line=dict(color='#071427', width=2))
+                marker=dict(line=dict(color="black", width=1))
             )
 
             fig.update_layout(
@@ -864,7 +865,8 @@ if selected == "Market Status":
             path=[px.Constant("Sensex Stocks"), 'Sector', 'Name'],
             values='MarketCap',
             color='PriceChange',
-            color_continuous_scale=['#f23645', '#1e222d', '#089981'],
+            color_continuous_scale=[[0, "red"], [
+                0.4, "red"], [0.6, "green"], [1, "green"]],
             color_continuous_midpoint=0,
             hover_data=['MarketCap', 'PriceChange', 'LastPrice'],
             width=None,
@@ -872,11 +874,11 @@ if selected == "Market Status":
         )        
 
         fig.update_traces(
-            texttemplate="<b>%{label}</b><br>%{customdata[1]:+.2f}%",
-            hovertemplate="<b>%{label}</b><br>Price: ₹%{customdata[2]:,.2f}<br>Change: %{customdata[1]:+.2f}%<extra></extra>",
-            textfont=dict(size=14, color="white"),
+            texttemplate="%{label}<br>M Cap: ₹%{customdata[0]:,.1f} Cr<br>Change: %{customdata[1]:+.2f}%<br>Price: ₹%{customdata[2]:,.1f}",
+            hovertemplate="%{label}<br>Market Cap: ₹%{customdata[0]:,.1f} Cr<br>Price Change: %{customdata[1]:+.2f}%<br>Last Price: ₹%{customdata[2]:,.1f}<extra></extra>",
+            textfont_size=18,
             hoverlabel=dict(font_size=18),
-            marker=dict(line=dict(color='#071427', width=2))
+            marker=dict(line=dict(color="black", width=1))
         )
 
         fig.update_layout(
@@ -1448,6 +1450,7 @@ if selected == "News":
 
 
 st.markdown("<br/><div style='margin-top:10px;color:rgba(255,255,255,0.6);font-size:13px;text-align:center'>EquityLens • Built with Streamlit</div>", unsafe_allow_html=True)
+
 
 
 
