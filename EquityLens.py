@@ -903,8 +903,7 @@ if selected == "Market Status":
         main()
 
 if selected == "Portfolio Analysis":
-    GEMINI_API_KEY = "AIzaSyDlmb0bhF2o49vtAFFU7cKhF9Mef4ZXlVo"
-    client = genai.Client(api_key=GEMINI_API_KEY)
+    client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
     SUPABASE_URL = "https://nucydrfkpbwqmiovcwdj.supabase.co"
     # 🔹 Use anon key (public) or service role key (admin access)
@@ -1450,6 +1449,7 @@ if selected == "News":
 
 
 st.markdown("<br/><div style='margin-top:10px;color:rgba(255,255,255,0.6);font-size:13px;text-align:center'>EquityLens • Built with Streamlit</div>", unsafe_allow_html=True)
+
 
 
 
